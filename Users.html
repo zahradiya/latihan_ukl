@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Pengguna | Presensi Online</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f2f6fa;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #0077b6;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+    }
+
+    header button {
+      background: #00b4d8;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    header button:hover {
+      background: #0096c7;
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      color: #0077b6;
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background: #caf0f8;
+      color: #023e8a;
+    }
+
+    tr:hover {
+      background: #e0f7fa;
+    }
+
+    .btn {
+      background: #00b4d8;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #0077b6;
+    }
+
+    .form-container {
+      display: none;
+      margin-top: 1rem;
+      background: #e0f7fa;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .form-container input {
+      margin: 5px 0;
+      padding: 8px;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .form-container button {
+      margin-top: 8px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #e0f7fa;
+      padding: 0.8rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: #0077b6;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      color: #023e8a;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Data Pengguna</h1>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Daftar Pengguna</h2>
+      <button class="btn" onclick="toggleForm()">+ Tambah Pengguna</button>
+
+      <div class="form-container" id="formContainer">
+        <input type="text" id="nama" placeholder="Nama Lengkap">
+        <input type="text" id="role" placeholder="Role (misal: Siswa / Karyawan)">
+        <input type="text" id="kelas" placeholder="Kelas / Jabatan">
+        <button class="btn" onclick="tambahUser()">Simpan</button>
+      </div>
+
+      <table id="tabelUser">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Role</th>
+            <th>Kelas/Jabatan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data pengguna akan muncul di sini -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <nav>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="users.html">👥 Pengguna</a>
+    <a href="history.html">📅 Riwayat</a>
+    <a href="analysis.html">📊 Analisis</a>
+  </nav>
+
+  <script>
+    let users = [
+      { nama: "Rara Putri", role: "Siswa", kelas: "XI RPL 1" },
+      { nama: "Budi Santoso", role: "Siswa", kelas: "XI RPL 2" },
+      { nama: "Pak Dimas", role: "Guru", kelas: "BK" }
+    ];
+
+    function tampilkanUser() {
+      const tbody = document.querySelector("#tabelUser tbody");
+      tbody.innerHTML = "";
+
+      users.forEach((user, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${user.nama}</td>
+            <td>${user.role}</td>
+            <td>${user.kelas}</td>
+            <td>
+              <button class="btn" onclick="hapusUser(${index})">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function toggleForm() {
+      const form = document.getElementById("formContainer");
+      form.style.display = form.style.display === "block" ? "none" : "block";
+    }
+
+    function tambahUser() {
+      const nama = document.getElementById("nama").value;
+      const role = document.getElementById("role").value;
+      const kelas = document.getElementById("kelas").value;
+
+      if (!nama || !role || !kelas) {
+        alert("Isi semua data dulu yaa 💡");
+        return;
+      }
+
+      users.push({ nama, role, kelas });
+      tampilkanUser();
+      toggleForm();
+      alert("Pengguna baru berhasil ditambahkan! 🎉");
+
+      // kosongkan input
+      document.getElementById("nama").value = "";
+      document.getElementById("role").value = "";
+      document.getElementById("kelas").value = "";
+    }
+
+    function hapusUser(index) {
+      if (confirm("Yakin mau hapus data ini?")) {
+        users.splice(index, 1);
+        tampilkanUser();
+      }
+    }
+
+    function logout() {
+      alert("Logout berhasil!");
+      window.location.href = "login.html";
+    }
+
+    tampilkanUser();
+  </script>
+
+</body>
+</html>

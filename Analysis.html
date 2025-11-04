@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisis Kehadiran | Presensi Online</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f2f6fa;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #0077b6;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+    }
+
+    header button {
+      background: #00b4d8;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    header button:hover {
+      background: #0096c7;
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    h2 {
+      color: #0077b6;
+      margin-bottom: 1rem;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+
+    select {
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #e0f7fa;
+      padding: 0.8rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: #0077b6;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      color: #023e8a;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Analisis Kehadiran</h1>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Grafik Kehadiran Bulanan</h2>
+      <label for="periode">Pilih Periode:</label>
+      <select id="periode" onchange="updateChart()">
+        <option value="bulan">Per Bulan</option>
+        <option value="kelas">Per Kelas</option>
+      </select>
+
+      <canvas id="chartKehadiran" height="150"></canvas>
+    </div>
+  </main>
+
+  <nav>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="users.html">👥 Pengguna</a>
+    <a href="history.html">📅 Riwayat</a>
+    <a href="analysis.html">📊 Analisis</a>
+  </nav>
+
+  <script>
+    const ctx = document.getElementById('chartKehadiran').getContext('2d');
+
+    let chartData = {
+      bulan: {
+        labels: ['Januari', 'Februari', 'Maret', 'April'],
+        data: [20, 18, 22, 19]
+      },
+      kelas: {
+        labels: ['XI RPL 1', 'XI RPL 2', 'XII RPL 1', 'XII RPL 2'],
+        data: [90, 85, 88, 92]
+      }
+    };
+
+    let chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: chartData.bulan.labels,
+        datasets: [{
+          label: 'Jumlah Kehadiran',
+          data: chartData.bulan.data,
+          backgroundColor: ['#00b4d8', '#48cae4', '#90e0ef', '#ade8f4']
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 5
+            }
+          }
+        }
+      }
+    });
+
+    function updateChart() {
+      const mode = document.getElementById('periode').value;
+      chart.data.labels = chartData[mode].labels;
+      chart.data.datasets[0].data = chartData[mode].data;
+      chart.data.datasets[0].label = mode === "bulan" ? "Jumlah Kehadiran" : "Persentase Kehadiran (%)";
+      chart.update();
+    }
+
+    function logout() {
+      alert("Logout berhasil!");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>

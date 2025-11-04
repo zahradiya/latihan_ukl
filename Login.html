@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Presensi Online</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #00b4d8, #0077b6);
+    }
+
+    .login-container {
+      background: #fff;
+      padding: 2rem 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-container h2 {
+      text-align: center;
+      color: #0077b6;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: #00b4d8;
+      box-shadow: 0 0 5px rgba(0, 180, 216, 0.4);
+    }
+
+    .btn-login {
+      width: 100%;
+      background: #00b4d8;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-login:hover {
+      background: #0077b6;
+    }
+
+    .alert {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: red;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Presensi Online</h2>
+    <div class="input-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Masukkan username">
+    </div>
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Masukkan password">
+    </div>
+    <button class="btn-login" onclick="login()">Login</button>
+    <div id="alert" class="alert">Username atau password salah!</div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const alertBox = document.getElementById('alert');
+
+      if (username === "" || password === "") {
+        alertBox.style.display = "block";
+        alertBox.innerText = "Isi semua kolom dulu!";
+        return;
+      }
+
+      // --- simulasi login ---
+      // nanti bisa diganti fetch ke API: /api/auth/login
+      if (username === "admin" && password === "1234") {
+        alert("Login berhasil!");
+        window.location.href = "dashboard.html"; // pindah ke halaman dashboard
+      } else {
+        alertBox.style.display = "block";
+        alertBox.innerText = "Username atau password salah!";
+      }
+    }
+  </script>
+</body>
+</html>
